@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :reference_id, :name, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :reference_id, :name, :email, :password, :password_confirmation, :remember_me, :authentication_token
   has_many :listings, :foreign_key => 'seller_id', :dependent => :destroy
   acts_as_tagger
 
@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   devise :token_authenticatable, :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, 
          :lockable, :unlock_strategy => :none, :lock_strategy => :none
-  # before_save :ensure_authentication_token
+  before_save :ensure_authentication_token
 
   validates :name,
     :presence => true,
@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json options={}
-    result = self.attributes.keep_if { |k,v| k == 'email' or k == 'name' or k == 'permalink' or k == 'signed' }
+    result = self.attributes.keep_if { |k,v| k == 'email' or k == 'name' or k == 'permalink' or k == 'signed' or k == 'authentication_token' }
     result[:listings] = self.listings
     result
   end
