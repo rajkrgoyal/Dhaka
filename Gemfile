@@ -1,5 +1,7 @@
 source :rubygems
 
+ruby '1.9.3' #Ruby 2.0 is creating issue on heroku. It's working fine with wuby 1.9.3
+
 gem 'rails', '>= 3.2.11'
 gem 'rack'
 gem 'capistrano'
@@ -63,3 +65,5 @@ group :test do
   gem 'cucumber-rails'
   gem 'turn', :require => false
 end
+
+gem 'eventmachine', '~> 1.0.3' # need to add it to make it work on heroku
